@@ -13,7 +13,13 @@ a certain way!
 
 ## The `format()` method
 
-The `String` class has a method to help format a `String` value called
+| String Method                                              | Description                                                          |
+|------------------------------------------------------------|----------------------------------------------------------------------|
+| public static String format(String format, Object... args) | Returns a formatted string using the specified format and arguments. |
+
+
+
+The `String` class has a static method to help format a `String` value called
 `format()`! To help explain how to use the `format()` method, let's look at an
 example:
 
@@ -37,14 +43,18 @@ Flatiron School is the best!
 ```
 
 As we can see in the example above, the `format()` method is a static method.
-Remember this means it does not need a `String` instance to be called. In this
+Remember this means it does not need a `String` instance to be called, we invoke
+the method through the class name i.e. `String.format("%s is the best!", bootcamp)`. In this
 case we see the `format()` method takes in two parameters, a `String` that we
-want to format and the objects we want to inject into the `String`. In the
+want to format and the object we want to inject into the string. In the
 example, the object just happens to be another `String` but it could be an
-`Integer` or a `Float`. We also see in the `String` that we want to format a
-character that looks like this: `%s`. The `%` tells Java that some format
-specifiers will follow and be placed here. The `s` that follows the `%` is a
-conversion character. **Conversion characters** are only valid for certain data
+`Integer` or a `Float`. 
+
+We also see in the `String` that we want to format a
+character that looks like this: `%s`, which is called a **format specifier**. A format specifier
+indicates how an argument should be processed and where it should be inserted in the string.
+The `s` that follows the `%` is a conversion character. **Conversion characters** 
+are only valid for certain data
 types and signal that a certain object will be placed within the `String` at the
 spot where the conversion character appears. Therefore, the `%s` says that
 another `String` will be placed where the `%s` appears. In the example above, we
@@ -61,8 +71,110 @@ Here are some of the conversion characters we may see:
 | d                    | Integer                |
 | f                    | Floating-Point Numbers |
 | n                    | New line               |
+| b                    | Boolean                | 
 
-### Formatting Rules
+
+Let's look again at the `format` method signature:
+
+`public static String format(String format, Object... args)`
+
+The second parameter is listed as `Object... args`.  The three dots `...` in Java are called
+**Variable Arguments** or **varargs**.
+Variable arguments allow the method to accept zero, one, or more arguments in that position.
+Thus, we can call the `format` method passing the format string as the first argument, followed
+by one, two, or even three additional objects as arguments as seen in the code below: 
+
+```java
+public class VarArgsExample {
+    public static void main(String[] args) {
+        String language = "Java";
+        int year = 1996;
+        String founder = "James Gosling";
+
+        String s1 = String.format("The %s programming language", language );
+        String s2 = String.format("The %s programming language was designed by %s", language, founder );
+        String s3 = String.format("The %s programming language was designed by %s and released in %d", language, founder, year );
+
+        System.out.println(s1);
+        System.out.println(s2);
+        System.out.println(s3);
+    }
+}
+```
+
+The program prints:
+
+```text
+The Java programming language
+The Java programming language was designed by James Gosling
+The Java programming language was designed by James Gosling and released in 1996
+```
+
+The number and type of additional arguments must match the number and type of format specifiers.
+
+
+- the string `s1` contains 1 format specifier `%s`, so we pass one string as an additional argument (language).
+- the string `s2` contains 2 format specifiers `%s %s`, so we pass two additional strings as arguments (language, founder).
+- the string `s3` contains 3 format specifiers `%s %s %d`, so we pass two strings and one integer as additional arguments (language, founder, year).
+
+
+
+### Comprehension Check
+
+<details>
+    <summary>What is printed by the following code?</summary>
+
+  <p>ANSWER:<br>Amir is 24 years old. It is true that Amir is hungry.</p> 
+  
+</details>
+
+```java
+String name = "Amir";
+int age = 24;
+boolean isHungry = true;
+
+String s = String.format("%s is %d years old. It is %b that %s is hungry.", name, age, isHungry, name);
+System.out.println(s);
+```
+
+<details>
+    <summary>The code below should print "Today is January 13, 2023." but there is an error in the code.
+    Can you identify the error?  How would you fix it?</summary>
+
+  <p>ANSWER:<br>The format specifier order is <code>%s %d, %d</code>, which means the
+  argument order should be <code>String, int, int</code>,
+  but the variable order passed to the format method are <code>int, String, int</code>.</p> 
+  <p>The correct code is:<br>
+   <code>String date = String.format("Today is %s %d, %d.", month, day, year);</code></p>
+
+</details>
+
+```java
+int day = 13;
+String month = "January";
+int year = 2023;
+
+String date = String.format("Today is %s %d, %d.", day, month, year);
+System.out.println(date);
+```
+
+<details>
+    <summary>Replace each "@" in the code below with the correct format specifier to produce the expected output:
+    <br>I would like 3 slices of pizza, please.
+    </summary>
+
+  <p>ANSWER:<br><code>String order = String.format("I would like %d slices of %s, please.", 3, "pizza" );</code></p> 
+  
+</details>
+
+```java
+String order = String.format("I would like @ slices of @, please.", 3, "pizza" );
+System.out.println(order);
+```
+
+
+
+### Format Specifier Rules
 
 When we want to format a `String`, we can use the following syntax:
 
@@ -72,7 +184,7 @@ When we want to format a `String`, we can use the following syntax:
 
 To break down the syntax some more:
 
-- The **flag** format specifier contains a set of characters to specify the
+- The **flag** specifier contains a set of characters to specify the
   format of the output. The character set very much depends on the data type
   that is to be formatted.
 - The **width** specifier specifies the amount of characters we want to output
@@ -80,7 +192,7 @@ To break down the syntax some more:
 - The **precision** specifier is usually used when the data type we are
   formatting is a `Float` and specifies how many decimal values should be
   printed.
-- Notice that the flat, width, and precision format specifiers are in brackets.
+- Notice that the flag, width, and precision specifiers are in brackets.
   These specifiers are optional whereas the `%` and the conversion character are
   required when formatting a `String`.
 
@@ -116,14 +228,10 @@ Parks and Recreation has 7 seasons.
 An ice cream cone costs $2.990000
 ```
 
-As we can see with `string2`, we can actually have multiple conversion
-characters within a `String`! When we do, we need to make sure we specify the
-appropriate number of object parameters afterwards. In this example, since we
-had a string conversion character and an integer conversion character, we need
+As we can see with `string2`, we have multiple conversion characters. Since we
+have a string conversion character `%s` and an integer conversion character `%d`, we need
 to provide both a `String` and an `Integer` as parameters in the `format()`
-method! Order is important, so we should always make sure that the following
-object parameters are in the same order as their correlating conversion
-character appears.
+method.
 
 With `string3`, we see that we are going to print out a floating-point number,
 so we use the `%f` character. Except, when we print `string3` to the console,
@@ -209,6 +317,12 @@ Some other flags include the following:
 | +     | Print the sign of the number (positive/negative) |
 | 0     | Print the number with leading zeroes             |
 
+
+
+
+
+
+
 ## The `printf()` method
 
 We might not always want to initialize a new `String` to just format it.
@@ -252,9 +366,128 @@ Parks and Recreation has 7 seasons.
 An ice cream cone costs $00000000002.99
 ```
 
+NOTE: Without the `%n` format specifier, the output would all be on one line!
+
+## Code Along
+
+Let's transform a small example to line up 3 lines of output in two columns.
+Create a new class in IntelliJ (or use the browser-based Java Visualizer) and copy the following code:
+
+```java
+public class StringPrecisionExample {
+    public static void main(String[] args) {
+
+        // The first string in each format string should be left aligned with a fixed width of 10 characters.
+        // The prices should be formatted with 2 digits after the decimal point.
+
+        String columnHeading = "%s %s";
+        String productFormat = "%s $%f";
+
+        System.out.printf(columnHeading, "PRODUCT", "PRICE");
+        System.out.printf(productFormat, "Potatoes", 4.27);
+        System.out.printf(productFormat, "Eggs", 3.99 );
+    }
+}
+```
+
+We would like the program to output:
+
+```text
+PRODUCT    PRICE
+Potatoes   $4.27
+Eggs       $3.99
+```
+
+However, it currently prints:
+
+```text
+PRODUCT PRICEPotatoes $4.270000Eggs $3.990000
+```
+
+### TASK #1
+
+<details>
+    <summary>
+    Update the <code>columnHeading</code> and <code>productFormat</code>
+    format strings to add a newline specifier at the end of the string.
+    </summary>
+
+  <p>ANSWER:<br><code>String columnHeading = "%s %s%n";</code><br><code>String productFormat = "%s $%f%n";</code></p> 
+
+</details>
+
+Confirm the program prints three separate lines of output:
+
+```text
+PRODUCT PRICE
+Potatoes $4.270000
+Eggs $3.990000
+```
+
+### TASK #2
+
+<details>
+    <summary>
+    Update the <code>productFormat</code>
+    format string to format the price with display 2 digits after the decimal point.
+    </summary>
+
+  <p>ANSWER:<br><code>String productFormat = "%s $%.2f%n";</code></p> 
+
+</details>
+
+Confirm the program output displays the price as shown:
+
+```text
+PRODUCT PRICE
+Potatoes $4.27
+Eggs $3.99
+```
+
+### TASK #3
+
+<details>
+    <summary>
+    Update both the <code>columnHeading</code> and <code>productFormat</code>
+    format strings to format the first string to have a width of 10 characters.
+    </summary>
+
+  <p>ANSWER:<br><code>String columnHeading = "%10s %s%n";</code><br><code>String productFormat = "%10s $%.2f%n";</code></p> 
+
+</details>
+
+Confirm the program output displays the output as shown below.
+The first string in each line of output has padding on the left due to its width of 10 characters.
+
+```text
+   PRODUCT PRICE
+  Potatoes $4.27
+      Eggs $3.99
+```
+
+### TASK #4
+
+<details>
+    <summary>
+    Update both the <code>columnHeading</code> and <code>productFormat</code>
+    format strings to left align the first string, which will place the extra padding spaces on the right.
+    </summary>
+
+  <p>ANSWER:<br><code>String columnHeading = "%-10s %s%n";</code><br><code>String productFormat = "%-10s $%.2f%n";</code></p> 
+
+</details>
+
+Confirm the program output displays the output as shown below.
+
+```text
+PRODUCT    PRICE
+Potatoes   $4.27
+Eggs       $3.99
+```
 
 ## RESOURCES
 
-- [Java 17 String](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html)    
-- [String format()](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html#format(java.lang.String,java.lang.Object...))   
+- [Java 17 String](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html)       
+- [String format()](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html#format(java.lang.String,java.lang.Object...))       
+- [Format String](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Formatter.html#syntax)    
 - [PrintStream printf()](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/PrintStream.html#printf(java.lang.String,java.lang.Object...))
