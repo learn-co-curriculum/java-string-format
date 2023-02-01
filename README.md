@@ -429,7 +429,7 @@ Eggs $3.990000
 <details>
     <summary>
     Update the <code>productFormat</code>
-    format string to format the price with display 2 digits after the decimal point.
+    format string to format the price to display only 2 digits after the decimal point.
     </summary>
 
   <p>ANSWER:<br><code>String productFormat = "%s $%.2f%n";</code></p> 
